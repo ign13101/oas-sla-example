@@ -1,124 +1,58 @@
 openapi: 3.0.3
 info:
   version: 1.0.0
-  title: Team API
-  description: Team api 
+  title: Associations API
+  description: API for retrieving associations information 
   x-sla:
     $ref: ./plans.yaml
 security:
   - BearerAuth: []
 paths:
-  /api/v1/teams:
-    x-router-controller: teamsController
+  /api/v1/associations:
+    x-router-controller: associationsController
     get:
-      description: Returns all teams
-      operationId: getTeams
+      description: Returns all associations
+      operationId: getAssociations
       responses:
         200:
-          description: Team list
+          description: Association list
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/team'
+                  $ref: '#/components/schemas/association'
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error'
-    post:
-      description: Creates a new team
-      operationId: addTeam
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/team'
-        description: Team to be created
-        required: true
-      responses:
-        201:
-          description: Team
-        default:
-            description: Unexpected error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/error'
-                  
-  /api/v1/teams/{id}:
-    x-router-controller: teamsController
+                $ref: '#/components/schemas/error'                     
+  /api/v1/associations/{registration_date}:
+    x-router-controller: associationsController
     get:
-      description: Returns a single team by its id
-      operationId: findByid
+      description: Returns a single association by its registration_date
+      operationId: findByregistration_date
       parameters:
         - required: true
-          name: id
-          description: id of the team to fetch
+          name: registration_date
+          description: registration_date of the association to fetch
           in: path
           schema:
             type: number
       responses:
         200:
-          description: Team found by id
+          description: Association found by registration_date
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/team'
+                $ref: '#/components/schemas/association'
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    put:
-      description: Update a team based on its id
-      operationId: updateTeam
-      parameters:
-        - required: true
-          name: id
-          description: id of the team to update
-          in: path
-          schema:
-            type: number
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/team'
-        description: Team to be updated
-        required: true
-      responses:
-        '204':
-          description: Team updated
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    delete:
-      description: Deletes a single team based on its id
-      operationId: deleteTeam
-      parameters:
-        - required: true
-          name: id
-          description: id of the team to delete
-          in: path
-          schema:
-            type: number
-      responses:
-        '204':
-          description: Team deleted
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-
 components:
   securitySchemes:
     BearerAuth:
@@ -126,25 +60,25 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    team:
+    association:
         type: object
         required:
-          - id
+          - registration_date
         properties:
-          id:
-            type: number
           name:
             type: string
-          code:
+          goal:
             type: string
-          country:
-            type: string
-          founded:
+          registration_date:
             type: number
-          national:
-            type: boolean
-          logo:
+          creation_date:
+            type: number
+          zip_code:
+            type: number
+          province:
             type: string
+          township_code:
+            type: number
     error:
       type: object
       required:
