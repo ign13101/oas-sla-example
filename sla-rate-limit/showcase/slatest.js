@@ -6,7 +6,7 @@ function myUrlBuilder(){
 }
 
 function myRequestBuilder(user){
-    const token = jwt.sign({plan: "pro", apikey: user}, process.env.JWT_SECRET, {issuer: process.env.JWT_ISSUER});
+    const token = jwt.sign({plan: "base", apikey: user}, process.env.JWT_SECRET, {issuer: process.env.JWT_ISSUER});
     
     return {
         options : {
